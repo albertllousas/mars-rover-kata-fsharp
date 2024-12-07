@@ -7,28 +7,19 @@ let assertThat actual expected = Expect.equal actual expected ""
 
 [<Tests>]
 let tests = testList "Mars rover tests" [
-
-  test "Should move a rover forward" {
-    let rover = { Dir = N; Pos = (0, 0) }
-    
-    let result  = Rover.executeCommand MoveForward rover 
-    
-    assertThat result { rover with Pos = (0, 1) }
-  }
   
-  test "Should move a rover backward" {
-    let rover = { Dir = N; Pos = (1, 1) }
+  testList "Move rover forward and backward scenarios" [
+    let testCases = 
+      [ (N, (0, 0), MoveForward, (0, 1))
+        (N, (1, 1), MoveBackward, (1, 0))
+        (W, (1, 1), MoveForward, (0, 1))]
+    for dir, pos, cmd, expectedPos in testCases do
+      test $"Should go from {pos} to {expectedPos} when executing {cmd} and direction is {dir}" {
+         let rover = { Dir = dir; Pos = pos }
     
-    let result  = Rover.executeCommand MoveBackward rover 
+         let result  = Rover.executeCommand cmd rover 
     
-    assertThat result { rover with Pos = (1, 0) }
-  }
-  
-  test "Should move a rover forward when direction is west" {
-    let rover = { Dir = W; Pos = (1, 1) }
-    
-    let result  = Rover.executeCommand MoveForward rover 
-    
-    assertThat result { rover with Pos = (0, 1) } 
-  }
+         assertThat result { rover with Pos = expectedPos }
+      }
+  ]
 ]

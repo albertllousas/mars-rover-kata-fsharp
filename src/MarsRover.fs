@@ -8,7 +8,10 @@ type Command = MoveForward | MoveBackward
 
 module Rover = 
   
-  let executeCommand cmd ({ Dir = _; Pos = (x, y)  } as rover) =
+  let executeCommand cmd ({ Dir = dir; Pos = (x, y)  } as rover) =
     match cmd with
-      | MoveForward -> { rover with Pos = (x, y + 1)  }
+      | MoveForward ->
+        match dir with
+          | N -> { rover with Pos = (x, y + 1)  }
+          | _ -> { rover with Pos = (x - 1, y)  }
       | MoveBackward -> { rover with Pos = (x, y - 1)  }

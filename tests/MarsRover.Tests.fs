@@ -15,4 +15,12 @@ let tests = testList "Mars rover tests" [
     
     assertThat result { rover with Pos = (0, 1) }
   }
+  
+  test "Should move a rover backward" {
+    let rover = { Dir = N; Pos = (1, 1) }
+    
+    let result  = Rover.executeCommand MoveBackward rover 
+    
+    assertThat result { rover with Pos = (1, 0) }
+  }
 ]

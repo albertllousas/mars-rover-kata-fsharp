@@ -13,6 +13,7 @@ let tests = testList "Mars rover tests" [
       [ (N, (0, 0), MoveForward, (0, 1))
         (W, (1, 1), MoveForward, (0, 1))
         (S, (1, 1), MoveForward, (1, 0))
+        (E, (1, 1), MoveForward, (2, 1))
         (N, (1, 1), MoveBackward, (1, 0))
         ]
     for dir, pos, cmd, expectedPos in testCases do

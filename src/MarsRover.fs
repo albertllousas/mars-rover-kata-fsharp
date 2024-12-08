@@ -14,5 +14,6 @@ module Rover =
         match dir with
           | N -> { rover with Pos = (x, y + 1)  }
           | W -> { rover with Pos = (x - 1, y)  }
-          | _ -> { rover with Pos = (x, y - 1)  }
+          | S -> { rover with Pos = (x, y - 1)  }
+          | E -> { rover with Pos = (x + 1, y)  }
       | MoveBackward -> { rover with Pos = (x, y - 1)  }

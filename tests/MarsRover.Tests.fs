@@ -28,4 +28,18 @@ let tests = testList "Mars rover tests" [
          assertThat result { rover with Pos = expectedPos }
       }
   ]
+  
+  testList "Turn rover left and right scenarios" [
+    let testCases = 
+      [ (N, TurnLeft, W)
+        ]
+    for dir, cmd, expectedDir in testCases do
+      test $"Should turn from {dir} to {expectedDir} when executing {cmd}" {
+         let rover = { Dir = dir; Pos = (0, 0) }
+    
+         let result  = Rover.executeCommand cmd rover 
+    
+         assertThat result { rover with Dir = expectedDir }
+      }
+  ]
 ]

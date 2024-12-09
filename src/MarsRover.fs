@@ -13,4 +13,6 @@ module Rover =
       | MoveForward ->
         match dir with | N -> (x, y + 1) | W -> (x - 1, y) | S -> (x, y - 1) | E -> (x + 1, y)
         |> fun pos -> { rover with Pos = pos}
-      | MoveBackward -> { rover with Pos = (x, y - 1)  }
+      | MoveBackward ->
+        match dir with | N -> (x, y - 1) | W -> (x + 1, y) | S -> (x, y + 1) | E -> (x - 1, y)
+        |> fun pos -> { rover with Pos = pos}

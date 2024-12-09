@@ -15,6 +15,9 @@ let tests = testList "Mars rover tests" [
         (S, (1, 1), MoveForward, (1, 0))
         (E, (1, 1), MoveForward, (2, 1))
         (N, (1, 1), MoveBackward, (1, 0))
+        (W, (1, 1), MoveBackward, (2, 1))
+        (S, (1, 1), MoveBackward, (1, 2))
+        (E, (1, 1), MoveBackward, (0, 1))
         ]
     for dir, pos, cmd, expectedPos in testCases do
       test $"Should go from {pos} to {expectedPos} when executing {cmd} and direction is {dir}" {

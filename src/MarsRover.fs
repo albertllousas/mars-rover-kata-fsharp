@@ -16,11 +16,10 @@ module Commands =
     let newPos = match dir with | N -> (x, y - 1) | W -> (x + 1, y) | S -> (x, y + 1) | E -> (x - 1, y)
     { rover with Pos = newPos}
   
-  let turnLeft ({ Dir = dir; Pos =  pos } as rover) =
-    let newDir = match dir with | N -> W | _ -> failwith "todo"
+  let turnLeft ({ Dir = dir; Pos =  _ } as rover) =
+    let newDir = match dir with | N -> W | W -> S | S -> E | E -> N
     { rover with Dir = newDir}
     
-
 module Rover = 
   
   let executeCommand cmd rover =
@@ -28,3 +27,4 @@ module Rover =
       | MoveForward -> Commands.moveForward rover
       | MoveBackward -> Commands.moveBackward rover
       | TurnLeft -> Commands.turnLeft rover
+      

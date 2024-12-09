@@ -9,12 +9,12 @@ type Command = MoveForward | MoveBackward
 module Commands =
   
   let moveForward ({ Dir = dir; Pos = (x, y)  } as rover) =
-     match dir with | N -> (x, y + 1) | W -> (x - 1, y) | S -> (x, y - 1) | E -> (x + 1, y)
-     |> fun pos -> { rover with Pos = pos}
+    let newPos = match dir with | N -> (x, y + 1) | W -> (x - 1, y) | S -> (x, y - 1) | E -> (x + 1, y)
+    { rover with Pos = newPos}
   
   let moveBackward ({ Dir = dir; Pos = (x, y)  } as rover)=
-    match dir with | N -> (x, y - 1) | W -> (x + 1, y) | S -> (x, y + 1) | E -> (x - 1, y)
-        |> fun pos -> { rover with Pos = pos}
+    let newPos = match dir with | N -> (x, y - 1) | W -> (x + 1, y) | S -> (x, y + 1) | E -> (x - 1, y)
+    { rover with Pos = newPos}
 
 module Rover = 
   

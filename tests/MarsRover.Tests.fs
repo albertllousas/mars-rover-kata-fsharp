@@ -35,6 +35,10 @@ let tests = testList "Mars rover tests" [
         (W, TurnLeft, S)
         (S, TurnLeft, E)
         (E, TurnLeft, N)
+        (N, TurnRight, E)
+        (W, TurnRight, N)
+        (S, TurnRight, W)
+        (E, TurnRight, S)
         ]
     for dir, cmd, expectedDir in testCases do
       test $"Should turn from {dir} to {expectedDir} when executing {cmd}" {

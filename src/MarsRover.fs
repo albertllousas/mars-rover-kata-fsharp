@@ -4,7 +4,7 @@ type Direction = N | S | E | W
 
 type Rover = { Dir: Direction; Pos : int * int }
 
-type Command = MoveForward | MoveBackward | TurnLeft
+type Command = MoveForward | MoveBackward | TurnLeft | TurnRight
 
 module Commands =
   
@@ -19,6 +19,10 @@ module Commands =
   let turnLeft ({ Dir = dir; Pos =  _ } as rover) =
     let newDir = match dir with | N -> W | W -> S | S -> E | E -> N
     { rover with Dir = newDir}
+  
+  let turnRight ({ Dir = dir; Pos =  _ } as rover) =
+    let newDir = match dir with | N -> E | W -> N | S -> W | E -> S
+    { rover with Dir = newDir}  
     
 module Rover = 
   
@@ -27,4 +31,5 @@ module Rover =
       | MoveForward -> Commands.moveForward rover
       | MoveBackward -> Commands.moveBackward rover
       | TurnLeft -> Commands.turnLeft rover
+      | TurnRight -> Commands.turnRight rover
       

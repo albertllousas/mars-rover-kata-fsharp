@@ -2,11 +2,10 @@ module MarsRoverTests
 
 open Expecto
 open MarsRover
-open MarsRover.Commands
 
 let assertThat actual expected = Expect.equal actual expected ""
 
-let planet = { Size = (2, 2) }
+let planet = { Size = (2, 2); Obstacles = [] }
 
 [<Tests>]
 let tests = testList "Mars rover tests" [
@@ -24,7 +23,7 @@ let tests = testList "Mars rover tests" [
         ]
     for dir, pos, cmd, expectedPos in testCases do
       test $"Should go from {pos} to {expectedPos} when executing {cmd} and direction is {dir}" {
-         let rover = { Dir = dir; Pos = pos; Planet = planet }
+         let rover = { Dir = dir; Pos = pos; Planet = planet; obstacle = None }
     
          let result  = Rover.executeCommand cmd rover 
     
@@ -45,7 +44,7 @@ let tests = testList "Mars rover tests" [
         ]
     for dir, cmd, expectedDir in testCases do
       test $"Should turn from {dir} to {expectedDir} when executing {cmd}" {
-         let rover = { Dir = dir; Pos = (0, 0); Planet = planet }
+         let rover = { Dir = dir; Pos = (0, 0); Planet = planet; obstacle = None }
     
          let result  = Rover.executeCommand cmd rover 
     
@@ -62,11 +61,20 @@ let tests = testList "Mars rover tests" [
         ]
     for dir, pos, expectedPos in testCases do
       test $"Should wrap around when {dir} edge of the planet is reached moving from {pos} to {expectedPos}" {
-         let rover = { Dir = dir; Pos = pos; Planet = planet }
+         let rover = { Dir = dir; Pos = pos; Planet = planet; obstacle = None }
     
          let result  = Rover.executeCommand MoveForward rover 
     
          assertThat result { rover with Pos = expectedPos }
       }
   ]
+  
+  test "Should not move and report if there is an obstacle when trying to process a command" {
+    let planetWithObstacles = { Size = (2, 2); Obstacles = [(0, 1)] }
+    let rover = { Dir = N; Pos = (0, 0); Planet = planetWithObstacles; obstacle = None }
+    
+    let result  = Rover.executeCommand MoveForward rover 
+    
+    assertThat result { rover with obstacle = Some (0, 1) }
+  }
 ]

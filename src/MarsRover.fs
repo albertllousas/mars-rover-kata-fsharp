@@ -2,9 +2,9 @@ module MarsRover
 
 type Direction = N | S | E | W
 
-type Planet = { Size : int * int }
+type Planet = { Size : int * int; Obstacles : (int * int) list }
 
-type Rover = { Dir: Direction; Pos : int * int; Planet: Planet }
+type Rover = { Dir: Direction; Pos : int * int; Planet: Planet; obstacle : (int * int) option }
 
 type Command = MoveForward | MoveBackward | TurnLeft | TurnRight
 
@@ -27,7 +27,7 @@ module Rover =
   let private wrapAround ({ Pos = (x, y); Planet = { Size = (lenght, width) }} as rover) =
     let fit num max = ((num % (max + 1)) + (max + 1)) % (max + 1) 
     { rover with Pos = (fit x lenght, fit y width)}
-   
+    
   let executeCommand cmd rover =
     let newRover =
       match cmd with
@@ -35,5 +35,6 @@ module Rover =
         | MoveBackward -> Commands.moveBackward rover
         | TurnLeft -> Commands.turnLeft rover
         | TurnRight -> Commands.turnRight rover
-    wrapAround newRover
+      |> wrapAround
+    if List.contains newRover.Pos rover.Planet.Obstacles then { rover with obstacle = (Some newRover.Pos) } else newRover
       

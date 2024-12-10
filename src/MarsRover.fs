@@ -29,7 +29,8 @@ module Commands =
 module Rover = 
   
   let private wrapAround ({ Pos = (x, y); Planet = { Size = (lenght, width) }} as rover) =
-    { rover with Pos = (((x % (lenght + 1)) + (lenght + 1)) % (lenght + 1), ((y % (width + 1)) + (width + 1)) % (width + 1))}
+    let fit num max = ((num % (max + 1)) + (max + 1)) % (max + 1) 
+    { rover with Pos = (fit x lenght, fit y width)}
    
   let executeCommand cmd rover =
     let newRover =

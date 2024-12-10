@@ -48,5 +48,5 @@ module Rover =
   let receive commands rover =
     Seq.map Commands.charToCommand commands
     |> Seq.toList
-    |> List.fold (fun rover cmd -> (executeCommand cmd rover)) rover  
+    |> List.fold (fun rover cmd -> if rover.obstacle.IsSome then rover else executeCommand cmd rover) rover  
       

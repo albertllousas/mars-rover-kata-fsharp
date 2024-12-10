@@ -86,4 +86,13 @@ let tests = testList "Mars rover tests" [
     
     assertThat result { rover with Pos = (2, 2); Dir = E }
   }
+  
+  test "Should receive a character array of commands and report error when detecting and obstacle" {
+    let planet = { Size = (10, 10); Obstacles = [(0, 1)] }
+    let rover = { Dir = N; Pos = (0, 0); Planet = planet; obstacle = None }
+    
+    let result  = Rover.receive "ffrflrbff" rover 
+    
+    assertThat result { rover with Pos = (0, 0); obstacle = Some (0, 1) }
+  }
 ]

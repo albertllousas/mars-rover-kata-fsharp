@@ -20,7 +20,10 @@ module Commands =
     { rover with Dir = match dir with | N -> W | W -> S | S -> E | E -> N}
   
   let turnRight ({ Dir = dir; Pos =  _ } as rover) =
-    { rover with Dir = match dir with | N -> E | W -> N | S -> W | E -> S}  
+    { rover with Dir = match dir with | N -> E | W -> N | S -> W | E -> S}
+    
+  let charToCommand c =
+    match c with | 'f' -> MoveForward | 'b' -> MoveBackward | 'r' -> TurnRight | 'l' -> TurnLeft | _ -> failwith "unrecognized cmd"
 
 module Planet =
 
@@ -43,7 +46,7 @@ module Rover =
     if Planet.hasObstacle newRover.Pos rover.Planet then { rover with obstacle = (Some newRover.Pos) } else newRover
     
   let receive commands rover =
-    Seq.map (fun c -> match c with | 'f' -> MoveForward | 'b' -> MoveBackward | 'r' -> TurnRight | 'l' -> TurnLeft | _ -> failwith "unrecognized cmd") commands
+    Seq.map Commands.charToCommand commands
     |> Seq.toList
     |> List.fold (fun rover cmd -> (executeCommand cmd rover)) rover  
       

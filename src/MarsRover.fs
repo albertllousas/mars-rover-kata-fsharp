@@ -21,12 +21,16 @@ module Commands =
   
   let turnRight ({ Dir = dir; Pos =  _ } as rover) =
     { rover with Dir = match dir with | N -> E | W -> N | S -> W | E -> S}  
-    
-module Rover = 
-  
-  let private wrapAround ({ Pos = (x, y); Planet = { Size = (lenght, width) }} as rover) =
+
+module Planet =
+
+  let wrapAround ({ Pos = (x, y); Planet = { Size = (lenght, width) }} as rover) =
     let fit num max = ((num % (max + 1)) + (max + 1)) % (max + 1) 
     { rover with Pos = (fit x lenght, fit y width)}
+    
+  let hasObstacle pos planet = List.contains pos planet.Obstacles
+    
+module Rover = 
     
   let executeCommand cmd rover =
     let newRover =
@@ -35,6 +39,6 @@ module Rover =
         | MoveBackward -> Commands.moveBackward rover
         | TurnLeft -> Commands.turnLeft rover
         | TurnRight -> Commands.turnRight rover
-      |> wrapAround
-    if List.contains newRover.Pos rover.Planet.Obstacles then { rover with obstacle = (Some newRover.Pos) } else newRover
+      |> Planet.wrapAround
+    if Planet.hasObstacle newRover.Pos rover.Planet then { rover with obstacle = (Some newRover.Pos) } else newRover
       

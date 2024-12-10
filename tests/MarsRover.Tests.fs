@@ -5,6 +5,8 @@ open MarsRover
 
 let assertThat actual expected = Expect.equal actual expected ""
 
+let planet = { Size = (2, 2) }
+
 [<Tests>]
 let tests = testList "Mars rover tests" [
   
@@ -21,7 +23,7 @@ let tests = testList "Mars rover tests" [
         ]
     for dir, pos, cmd, expectedPos in testCases do
       test $"Should go from {pos} to {expectedPos} when executing {cmd} and direction is {dir}" {
-         let rover = { Dir = dir; Pos = pos }
+         let rover = { Dir = dir; Pos = pos; Planet = planet }
     
          let result  = Rover.executeCommand cmd rover 
     
@@ -42,11 +44,19 @@ let tests = testList "Mars rover tests" [
         ]
     for dir, cmd, expectedDir in testCases do
       test $"Should turn from {dir} to {expectedDir} when executing {cmd}" {
-         let rover = { Dir = dir; Pos = (0, 0) }
+         let rover = { Dir = dir; Pos = (0, 0); Planet = planet }
     
          let result  = Rover.executeCommand cmd rover 
     
          assertThat result { rover with Dir = expectedDir }
       }
   ]
+  
+  test "Should wrap around when north edge of the planet is reached" {
+    let rover = { Dir = N; Pos = (0, 2); Planet = planet }
+    
+    let result  = Rover.executeCommand MoveForward rover
+    
+    assertThat result { rover with Pos = (0, 0) }
+  }
 ]

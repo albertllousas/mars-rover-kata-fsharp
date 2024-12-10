@@ -11,20 +11,16 @@ type Command = MoveForward | MoveBackward | TurnLeft | TurnRight
 module Commands =
   
   let moveForward ({ Dir = dir; Pos = (x, y) } as rover) =
-    let newPos = match dir with | N -> (x, y + 1) | W -> (x - 1, y) | S -> (x, y - 1) | E -> (x + 1, y)
-    { rover with Pos = newPos}
+    { rover with Pos = match dir with | N -> (x, y + 1) | W -> (x - 1, y) | S -> (x, y - 1) | E -> (x + 1, y)}
   
   let moveBackward ({ Dir = dir; Pos = (x, y) } as rover) =
-    let newPos = match dir with | N -> (x, y - 1) | W -> (x + 1, y) | S -> (x, y + 1) | E -> (x - 1, y)
-    { rover with Pos = newPos}
+    { rover with Pos = match dir with | N -> (x, y - 1) | W -> (x + 1, y) | S -> (x, y + 1) | E -> (x - 1, y)}
   
   let turnLeft ({ Dir = dir; Pos =  _ } as rover) =
-    let newDir = match dir with | N -> W | W -> S | S -> E | E -> N
-    { rover with Dir = newDir}
+    { rover with Dir = match dir with | N -> W | W -> S | S -> E | E -> N}
   
   let turnRight ({ Dir = dir; Pos =  _ } as rover) =
-    let newDir = match dir with | N -> E | W -> N | S -> W | E -> S
-    { rover with Dir = newDir}  
+    { rover with Dir = match dir with | N -> E | W -> N | S -> W | E -> S}  
     
 module Rover = 
   

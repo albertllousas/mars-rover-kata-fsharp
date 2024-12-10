@@ -57,6 +57,8 @@ let tests = testList "Mars rover tests" [
     let testCases = 
       [ (N, (0, 2), (0, 0))
         (S, (0, 0), (0, 2))
+        (W, (0, 0), (2, 0))
+        (E, (2, 0), (0, 0))
         ]
     for dir, pos, expectedPos in testCases do
       test $"Should wrap around when {dir} edge of the planet is reached moving from {pos} to {expectedPos}" {

@@ -2,6 +2,7 @@ module MarsRoverTests
 
 open Expecto
 open MarsRover
+open MarsRover.Commands
 
 let assertThat actual expected = Expect.equal actual expected ""
 
@@ -52,11 +53,17 @@ let tests = testList "Mars rover tests" [
       }
   ]
   
-  test "Should wrap around when north edge of the planet is reached" {
-    let rover = { Dir = N; Pos = (0, 2); Planet = planet }
+  testList "Wrap around the planet scenarios" [
+    let testCases = 
+      [ (N, (0, 2), (0, 0))
+        ]
+    for dir, pos, expectedPos in testCases do
+      test $"Should wrap around when {dir} edge of the planet is reached moving from {pos} to {expectedPos}" {
+         let rover = { Dir = dir; Pos = pos; Planet = planet }
     
-    let result  = Rover.executeCommand MoveForward rover
+         let result  = Rover.executeCommand MoveForward rover 
     
-    assertThat result { rover with Pos = (0, 0) }
-  }
+         assertThat result { rover with Pos = expectedPos }
+      }
+  ]
 ]

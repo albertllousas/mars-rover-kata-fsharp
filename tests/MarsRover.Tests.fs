@@ -25,7 +25,7 @@ let tests = testList "Mars rover tests" [
       test $"Should go from {pos} to {expectedPos} when executing {cmd} and direction is {dir}" {
          let rover = { Dir = dir; Pos = pos; Planet = planet; obstacle = None }
     
-         let result  = Rover.executeCommand cmd rover 
+         let result = Rover.executeCommand cmd rover 
     
          assertThat result { rover with Pos = expectedPos }
       }
@@ -46,7 +46,7 @@ let tests = testList "Mars rover tests" [
       test $"Should turn from {dir} to {expectedDir} when executing {cmd}" {
          let rover = { Dir = dir; Pos = (0, 0); Planet = planet; obstacle = None }
     
-         let result  = Rover.executeCommand cmd rover 
+         let result = Rover.executeCommand cmd rover 
     
          assertThat result { rover with Dir = expectedDir }
       }
@@ -63,7 +63,7 @@ let tests = testList "Mars rover tests" [
       test $"Should wrap around when {dir} edge of the planet is reached moving from {pos} to {expectedPos}" {
          let rover = { Dir = dir; Pos = pos; Planet = planet; obstacle = None }
     
-         let result  = Rover.executeCommand MoveForward rover 
+         let result = Rover.executeCommand MoveForward rover 
     
          assertThat result { rover with Pos = expectedPos }
       }
@@ -73,8 +73,17 @@ let tests = testList "Mars rover tests" [
     let planetWithObstacles = { Size = (2, 2); Obstacles = [(0, 1)] }
     let rover = { Dir = N; Pos = (0, 0); Planet = planetWithObstacles; obstacle = None }
     
-    let result  = Rover.executeCommand MoveForward rover 
+    let result = Rover.executeCommand MoveForward rover 
     
     assertThat result { rover with obstacle = Some (0, 1) }
+  }
+  
+  test "Should receive a character array of commands and move the rover around the planet" {
+    let planet = { Size = (10, 10); Obstacles = [(5, 5)] }
+    let rover = { Dir = N; Pos = (0, 0); Planet = planet; obstacle = None }
+    
+    let result  = Rover.receive "ffrflrbff" rover 
+    
+    assertThat result { rover with Pos = (2, 2); Dir = E }
   }
 ]

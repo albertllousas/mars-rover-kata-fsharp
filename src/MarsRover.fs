@@ -41,4 +41,9 @@ module Rover =
         | TurnRight -> Commands.turnRight rover
       |> Planet.wrapAround
     if Planet.hasObstacle newRover.Pos rover.Planet then { rover with obstacle = (Some newRover.Pos) } else newRover
+    
+  let receive commands rover =
+    Seq.map (fun c -> match c with | 'f' -> MoveForward | 'b' -> MoveBackward | 'r' -> TurnRight | 'l' -> TurnLeft | _ -> failwith "unrecognized cmd") commands
+    |> Seq.toList
+    |> List.fold (fun rover cmd -> (executeCommand cmd rover)) rover  
       
